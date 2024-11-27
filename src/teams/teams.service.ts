@@ -18,11 +18,39 @@ export class TeamsService {
     return this.db.team.findUnique({where: {id}, include: {players: true}});
   }
 
-  update(id: number, updateTeamDto: UpdateTeamDto) {
-    return this.db.team.update({where: {id}, data: updateTeamDto});
+  teamsWithPlayers() {
+    return this.db.team.findMany({where: {players: {some: {}}}, include: {players: true}});
   }
 
-  remove(id: number) {
-    return this.db.team.delete({where: {id}});
+  async update(id: number, updateTeamDto: UpdateTeamDto) {
+    try {
+      return await this.db.team.update({where: {id}, data: updateTeamDto});
+    } catch {
+      return undefined;
+    }
+  }
+
+  async remove(id: number) {
+    try {
+      return await this.db.team.delete({where: {id}});
+    } catch {
+      return undefined;
+    }
+  }
+
+  async addPlayer(id: number, playerId: number) {
+    try {
+      return await this.db.team.update({where: {id}, data: {players: {connect: {id: playerId}}}, include: {players: true}});
+    } catch {
+      return undefined;
+    }
+  }
+
+  async removePlayer(id: number, playerId: number) {
+    try {
+      return await this.db.team.update({where: {id}, data: {players: {disconnect: {id: playerId}}}, include: {players: true}});
+    } catch {
+      return undefined;
+    }
   }
 }
