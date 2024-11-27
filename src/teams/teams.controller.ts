@@ -20,7 +20,7 @@ export class TeamsController {
   @Post(':id/addPlayer/:playerid')
   async addPlayer(@Param('id') id: string, @Param('playerid') playerId: string) {
     const response = await this.teamsService.addPlayer(+id, +playerId);
-    if (!response) throw new NotFoundException();
+    if (!response) throw new NotFoundException("Id not found!");
     return response;
   }
 
@@ -28,7 +28,7 @@ export class TeamsController {
   @Delete(':id/removePlayer/:playerid')
   async removePlayer(@Param('id') id: string, @Param('playerid') playerId: string) {
     const response = await this.teamsService.removePlayer(+id, +playerId);
-    if (!response) throw new NotFoundException();
+    if (!response) throw new NotFoundException("Id not found!");
   }
 
   @Get("players")
@@ -44,7 +44,7 @@ export class TeamsController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTeamDto: UpdateTeamDto) {
     const response = await this.teamsService.update(+id, updateTeamDto);
-    if (!response) throw new NotFoundException();
+    if (!response) throw new NotFoundException("Id not found!");
     return response;
   }
 
@@ -52,6 +52,6 @@ export class TeamsController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const response = await this.teamsService.remove(+id);
-    if (!response) throw new NotFoundException();
+    if (!response) throw new NotFoundException("Id not found!");
   }
 }
